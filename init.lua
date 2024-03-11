@@ -24,6 +24,8 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 
+vim.opt.inccommand = 'split'
+
 vim.opt.relativenumber = true
 
 -- [[ Configure plugins ]]

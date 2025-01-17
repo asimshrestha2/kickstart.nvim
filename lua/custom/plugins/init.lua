@@ -60,5 +60,13 @@ return {
     opts = {
       cloak_telescope = true,
     }
-  }
+  },
+  {
+    'echasnovski/mini.animate',
+    version = '*',
+    event = "VeryLazy",
+    config = function()
+      require("mini.animate").setup()
+    end
+  },
 }

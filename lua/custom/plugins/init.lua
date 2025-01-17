@@ -55,4 +55,10 @@ return {
       { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
     }
   },
+  {
+    "laytan/cloak.nvim",
+    opts = {
+      cloak_telescope = true,
+    }
+  }
 }

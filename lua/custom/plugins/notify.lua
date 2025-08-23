@@ -6,9 +6,10 @@ return {
       background_colour = '#000000',
     },
     config = function()
-      vim.cmd [[
-		hi NotifyBackground guibg = #000000
-	  ]]
+      require('notify').setup {
+        merge_duplicates = true,
+        background_colour = '#000000',
+      }
       vim.notify = require 'notify'
     end,
   },

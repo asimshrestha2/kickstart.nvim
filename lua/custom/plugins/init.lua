@@ -27,6 +27,19 @@ end
 
 require('lspconfig').gdscript.setup {}
 
+require('lspconfig').rust_analyzer.setup {
+  settings = {
+    ['rust-analyzer'] = {
+      cargo = {
+        allFeatures = true,
+      },
+      rustflags = {
+        '-Clinker=clang -Clink-arg=-fuse-ld=mold',
+      },
+    },
+  },
+}
+
 return {
   {
     'nomnivore/ollama.nvim',

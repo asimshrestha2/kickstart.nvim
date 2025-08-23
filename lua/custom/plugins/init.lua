@@ -25,13 +25,19 @@ if is_godot_project and not is_server_running then
   vim.fn.serverstart(godot_project_path .. '/server.pipe')
 end
 
-require('lspconfig').gdscript.setup {}
+local lsp = require 'lspconfig'
 
-require('lspconfig').rust_analyzer.setup {
+lsp.gdscript.setup {}
+
+lsp.rust_analyzer.setup {
   settings = {
     ['rust-analyzer'] = {
       cargo = {
         allFeatures = true,
+      },
+      checkOnSave = true,
+      check = {
+        command = 'clippy', -- Use Clippy for linting
       },
       rustflags = {
         '-Clinker=clang -Clink-arg=-fuse-ld=mold',

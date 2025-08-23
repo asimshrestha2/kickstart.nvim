@@ -589,6 +589,22 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = {
+                allFeatures = true,
+                extraEnv = {
+                  RUSTFLAGS = '-Clinker=clang -Clink-arg=-fuse-ld=mold',
+                },
+              },
+              checkOnSave = true,
+              check = {
+                command = 'clippy', -- Use Clippy for linting
+              },
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -622,6 +638,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'rust-analyzer',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -620,6 +620,10 @@ require('lazy').setup({
             },
           },
         },
+
+        pico8_ls = {
+          filetypes = { 'p8', 'pico8' },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -639,6 +643,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'rust-analyzer',
+        'pico8-ls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -656,6 +661,12 @@ require('lazy').setup({
           end,
         },
       }
+
+      -- Installed LSPs are configured and enabled automatically with mason-lspconfig
+      -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+      for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+      end
     end,
   },
 

@@ -25,9 +25,7 @@ if is_godot_project and not is_server_running then
   vim.fn.serverstart(godot_project_path .. '/server.pipe')
 end
 
-local lsp = require 'lspconfig'
-
-lsp.gdscript.setup {}
+vim.lsp.config('gdscript', {})
 
 return {
   {

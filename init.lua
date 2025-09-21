@@ -666,6 +666,7 @@ require('lazy').setup({
       -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
       for server_name, config in pairs(servers) do
         vim.lsp.config(server_name, config)
+        vim.lsp.enable(server_name)
       end
     end,
   },

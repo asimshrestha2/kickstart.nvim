@@ -1,12 +1,17 @@
 return {
-  'rose-pine/neovim',
-  name = 'rose-pine',
+  'neanias/everforest-nvim',
+  version = false,
+  lazy = false,
+  priority = 1000, -- make sure to load this before all the other start plugins
+  -- Optional; default configuration will be used if setup isn't called.
   config = function()
-    require('rose-pine').setup {
-      styles = {
-        transparency = true,
-      },
+    require('everforest').setup {
+      -- Your config here
+      background = 'hard',
+      transparent_background_level = 1,
+      ui_contrast = 'high',
     }
-    vim.cmd 'colorscheme rose-pine'
+
+    vim.cmd.colorscheme 'everforest'
   end,
 }

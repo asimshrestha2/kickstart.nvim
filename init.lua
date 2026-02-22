@@ -668,6 +668,7 @@ require('lazy').setup({
         vim.lsp.config(server_name, config)
         vim.lsp.enable(server_name)
       end
+      vim.lsp.enable 'gdscript'
     end,
   },
 

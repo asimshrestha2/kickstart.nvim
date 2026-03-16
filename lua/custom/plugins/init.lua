@@ -27,6 +27,23 @@ end
 
 vim.lsp.config('gdscript', {})
 
+-- terminal
+vim.keymap.set('t', '<esc><esc>', '<c-\\><c-n>')
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  callback = function()
+    vim.o.number = false
+    vim.o.relativenumber = false
+  end,
+})
+
+vim.keymap.set('n', '<space>st', function()
+  vim.cmd.vnew()
+  vim.cmd.term()
+  vim.cmd.wincmd 'J'
+  vim.api.nvim_win_set_height(0, 15)
+end)
+
 return {
   {
     'nomnivore/ollama.nvim',

@@ -38,8 +38,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
 })
 
 vim.keymap.set('n', '<space>st', function()
-  vim.cmd.vsplit 'term://fish'
-  vim.cmd.wincmd 'J'
+  vim.cmd.split 'term://fish'
   vim.api.nvim_win_set_height(0, 20)
 end)
 

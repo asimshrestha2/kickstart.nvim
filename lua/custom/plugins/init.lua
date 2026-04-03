@@ -34,6 +34,16 @@ vim.api.nvim_create_autocmd('TermOpen', {
   callback = function()
     vim.o.number = false
     vim.o.relativenumber = false
+    vim.cmd 'startinsert'
+  end,
+})
+
+vim.api.nvim_create_autocmd('TermClose', {
+  callback = function()
+    local ev = vim.api.nvim_get_vvar 'event'
+    if ev.status == 0 then
+      vim.cmd 'close'
+    end
   end,
 })
 
@@ -41,6 +51,13 @@ vim.keymap.set('n', '<space>st', function()
   vim.cmd.split 'term://fish'
   vim.api.nvim_win_set_height(0, 20)
 end)
+
+local is_rust_project = vim.uv.fs_stat(cwd .. '/Cargo.toml')
+if is_rust_project then
+  vim.keymap.set('n', '<space>Cr', function()
+    vim.cmd.split 'term://cargo run'
+  end, { desc = 'Cargo Run' })
+end
 
 return {
   {
@@ -108,5 +125,16 @@ return {
     config = function()
       require('mini.animate').setup()
     end,
+  },
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
   },
 }

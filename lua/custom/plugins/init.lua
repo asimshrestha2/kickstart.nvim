@@ -39,10 +39,10 @@ vim.api.nvim_create_autocmd('TermOpen', {
 })
 
 vim.api.nvim_create_autocmd('TermClose', {
-  callback = function()
+  callback = function(evm)
     local ev = vim.api.nvim_get_vvar 'event'
     if ev.status == 0 then
-      vim.cmd 'close'
+      vim.api.nvim_buf_delete(evm.buf, {})
     end
   end,
 })

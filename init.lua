@@ -157,6 +157,8 @@ rtp:prepend(lazypath)
 vim.cmd 'packadd nvim.undotree'
 vim.keymap.set('n', '<leader>u', require('undotree').open, { desc = 'Open Undotree' })
 
+require('vim._core.ui2').enable {}
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -904,7 +906,10 @@ require('lazy').setup({
         -- vim.wo.foldmethod = 'expr'
 
         -- enables treesitter based indentation
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        local has_indent_query = vim.treesitter.query.get(language, 'indent') ~= nil
+        if has_indent_query then
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
       end
 
       local available_parsers = require('nvim-treesitter').get_available()

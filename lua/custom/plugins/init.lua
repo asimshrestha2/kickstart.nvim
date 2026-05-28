@@ -26,6 +26,7 @@ if is_godot_project and not is_server_running then
 end
 
 vim.lsp.config('gdscript', {})
+vim.lsp.enable 'gleam'
 
 -- terminal
 vim.keymap.set('t', '<esc><esc>', '<c-\\><c-n>')
@@ -48,9 +49,13 @@ vim.api.nvim_create_autocmd('TermClose', {
 })
 
 vim.keymap.set('n', '<space>st', function()
+  vim.cmd.vsplit 'term://fish'
+end, { desc = 'Split Terminal' })
+
+vim.keymap.set('n', '<space>sb', function()
   vim.cmd.split 'term://fish'
   vim.api.nvim_win_set_height(0, 20)
-end)
+end, { desc = 'Split Terminal Bottom ' })
 
 local is_rust_project = vim.uv.fs_stat(cwd .. '/Cargo.toml')
 if is_rust_project then

@@ -23,6 +23,14 @@ local is_server_running = vim.uv.fs_stat(godot_project_path .. '/server.pipe')
 -- start server, if not already running
 if is_godot_project and not is_server_running then
   vim.fn.serverstart(godot_project_path .. '/server.pipe')
+  if vim.fn.maparg('<leader>sf', 'n') ~= '' then
+    vim.keymap.del('n', '<leader>sf')
+  end
+  vim.keymap.set('n', '<leader>sf', function()
+    require('telescope.builtin').find_files {
+      file_ignore_patterns = { '%.uid$' },
+    }
+  end, { desc = '[S]earch [F]iles in Godot Project' })
 end
 
 vim.lsp.config('gdscript', {})
@@ -66,39 +74,6 @@ end
 
 return {
   {
-    'nomnivore/ollama.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-
-    -- All the user commands added by the plugin
-    cmd = { 'Ollama', 'OllamaModel', 'OllamaServe', 'OllamaServeStop' },
-
-    keys = {
-      -- Sample keybind for prompt menu. Note that the <c-u> is important for selections to work properly.
-      {
-        '<leader>oo',
-        ":<c-u>lua require('ollama').prompt()<cr>",
-        desc = 'ollama prompt',
-        mode = { 'n', 'v' },
-      },
-
-      -- Sample keybind for direct prompting. Note that the <c-u> is important for selections to work properly.
-      {
-        '<leader>oG',
-        ":<c-u>lua require('ollama').prompt('Generate_Code')<cr>",
-        desc = 'ollama Generate Code',
-        mode = { 'n', 'v' },
-      },
-    },
-
-    ---@type Ollama.Config
-    opts = {
-      model = 'dolphin-mistral',
-      url = 'http://ubuntu.local:11434',
-    },
-  },
-  {
     'kdheepak/lazygit.nvim',
     cmd = {
       'LazyGit',
@@ -124,21 +99,31 @@ return {
     },
   },
   {
-    'echasnovski/mini.animate',
-    version = '*',
-    event = 'VeryLazy',
-    config = function()
-      require('mini.animate').setup()
-    end,
-  },
-  {
     'stevearc/oil.nvim',
     ---@module 'oil'
     ---@type oil.SetupOpts
-    opts = {},
+    opts = {
+      view_options = {
+        show_hidden = true,
+        is_always_hidden = function(name, bufnr)
+          -- for godot projects ignore *.uid files
+          if is_godot_project then
+            -- ignore *.uid files introduced in godot 4.4
+            if vim.endswith(name, '.uid') then
+              return true
+            end
+            -- ignore server.pipe file
+            if name == 'server.pipe' then
+              return true
+            end
+          else
+            return false
+          end
+        end,
+      },
+    },
     -- Optional dependencies
     dependencies = { { 'nvim-mini/mini.icons', opts = {} } },
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
     -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
     lazy = false,
   },
